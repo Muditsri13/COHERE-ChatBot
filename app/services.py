@@ -1,23 +1,19 @@
 import os
-from openai import OpenAI
+import cohere
 from dotenv import load_dotenv
 
 load_dotenv()
+API_KEY = os.getenv("COHERE_API_KEY")
+co = cohere.Client(API_KEY)
 
-api_key = os.getenv("OPENAI_API_KEY")
-print("✅ API Key Loaded:", api_key[:8] + "..." if api_key else "❌ Not loaded")
-
-client = OpenAI(api_key=api_key)
-
-def ask_openai(prompt: str) -> str:
+def ask_cohere(prompt: str) -> str:
     try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
+        response = co.generate(
+            model="command",
+            prompt=prompt,
+            max_tokens=150,
+            temperature=0.7
         )
-        return response.choices[0].message.content.strip()
+        return response.generations[0].text.strip()
     except Exception as e:
-        print("❌ OpenAI API Error:", e)
-        return f"Error contacting OpenAI: {e}"
+        return f"Error: {str(e)}"
