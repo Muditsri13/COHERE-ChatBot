@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from app.routes import router
+from .routes import router
+
 
 app = FastAPI()
 app.include_router(router)
