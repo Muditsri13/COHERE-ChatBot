@@ -9,7 +9,9 @@
 <body>
   <div class="chat-container">
     <h2>🧠 Cohere AI Assistant</h2>
+
     <div id="chat-box"></div>
+
     <div class="input-area">
       <input type="text" id="user-input" placeholder="Type your message..." />
       <button onclick="sendMessage()">Send</button>
@@ -24,6 +26,7 @@
 
       if (!message) return;
 
+      // Add user message
       const userMsg = document.createElement("div");
       userMsg.className = "user-msg";
       userMsg.innerText = "🧑: " + message;
@@ -39,6 +42,7 @@
         });
 
         const data = await response.json();
+
         const botMsg = document.createElement("div");
         botMsg.className = "bot-msg";
         botMsg.innerText = "🤖: " + data.response;
@@ -46,7 +50,7 @@
         chatBox.scrollTop = chatBox.scrollHeight;
 
       } catch (error) {
-        console.error("Error:", error);
+        console.error("❌ Error:", error);
         const errorMsg = document.createElement("div");
         errorMsg.className = "bot-msg";
         errorMsg.innerText = "🤖: Error contacting the assistant.";
@@ -54,6 +58,7 @@
       }
     }
 
+    // Enable Enter key to send
     document.getElementById("user-input").addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
