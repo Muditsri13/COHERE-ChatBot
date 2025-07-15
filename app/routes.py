@@ -1,13 +1,12 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from app.services import ask_openai
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
+from app.services import ask_cohere
 
 router = APIRouter()
 
-class PromptRequest(BaseModel):
-    prompt: str
-
 @router.post("/ask")
-def ask_ai(request: PromptRequest):
-    response = ask_openai(request.prompt)
-    return {"response": response}
+async def ask(request: Request):
+    data = await request.json()
+    prompt = data.get("prompt")
+    response = ask_cohere(prompt)
+    return JSONResponse(content={"response": response})
